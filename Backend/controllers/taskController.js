@@ -1,41 +1,38 @@
 const Task = require("../models/taskModel");
 
 // Get all tasks
-exports.getTasks = (req, res) => {
-  Task.getAll((err, data) => {
-    if (err) {
-      console.log("Error:", err);
-      return res.status(500).send("Server Error");
-    }
-
-    res.json(data); // send tasks to frontend
-  });
-};
+exports.getTasks = async(req, res) => {
+ try{
+   const data = await Task.getAll();
+   res.json(data); 
+ }catch (err) {
+    console.log("Error:", err);
+    res.status(500).send("Server Error");
+  }
+    
+}
 
 //  Add a new task
-exports.addTask = (req, res) => {
-  const title = req.body.title;
+exports.addTask = async(req, res) => {
+  try{
+     const title = req.body.title;
+     await Task.create(title);
+      res.json({ message: "Task added successfully" });
 
-  Task.create(title, (err, data) => {
-    if (err) {
-      console.log("Error:", err);
-      return res.status(500).send("Server Error");
-    }
-
-    res.json({ message: "Task added successfully" });
-  });
+  }catch (err) {
+    console.log("Error:", err);
+    res.status(500).send("Server Error");
+  }
 };
 
 //  Delete a task
-exports.deleteTask = (req, res) => {
-  const id = req.params.id;
-
-  Task.delete(id, (err, data) => {
-    if (err) {
-      console.log("Error:", err);
-      return res.status(500).send("Server Error");
-    }
-
-    res.json({ message: "Task deleted successfully" });
-  });
+exports.deleteTask = async (req, res) => {
+  try{
+      const id = req.params.id;
+       await Task.delete(id); 
+       res.json({ message: "Task deleted successfully" });
+  }catch (err) {
+    console.log("Error:", err);
+    res.status(500).send("Server Error");
+  }
 };

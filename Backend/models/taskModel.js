@@ -6,7 +6,7 @@ Task.getAll = async ()=>{
         const [rows] = await db.query("SELECT * FROM task");
         return rows;
     }catch(err){
-        console.log(err)
+        console.log("Error from the database" , err)
 
     }
 }
@@ -18,7 +18,7 @@ Task.create = async(title)=>{
         return result
 
     }catch(err){
-        console.log(errr);
+        console.log("Error to insert the data" , err);
     }
 }
 
@@ -28,7 +28,7 @@ Task.delete = async (id)=>{
         const [result] = await db.query("DELETE FROM task WHERE id = ? ", [id]);
         return result ;
     }catch(err){
-        console.log(err)
+        console.log("Error to delete the data" , err)
     }
 }
 module.exports = Task;
